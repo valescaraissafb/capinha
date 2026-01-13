@@ -6,7 +6,11 @@ import sys
 
 def main():
     """Run administrative tasks."""
+<<<<<<< HEAD
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'capinha.settings')
+=======
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
+>>>>>>> c6301f6be7e6346184c66b74eed5197b1704a1b4
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
