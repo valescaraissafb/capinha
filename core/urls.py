@@ -23,7 +23,7 @@ urlpatterns = [
     path('artists/', include('artists.urls')),
     path('creations/', include('creations.urls')),
 ]
-
+# NÃO MEXA ISSO AQUI QUE ESTÁ COMENTADO!!!!
 # urlpatterns = [
 #     path("api/", include("orders.urls")),
 # ]
