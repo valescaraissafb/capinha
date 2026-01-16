@@ -4,13 +4,13 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth import authenticate
-from .models import User
+from .models import user
 from .serializers import UserListSerializer, UserDetailSerializer, UserCreateSerializer
 
 # Create your views here.
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = user.objects.all()
     permission_classes = [IsAuthenticated]
     
     def get_serializer_class(self):
