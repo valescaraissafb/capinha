@@ -132,18 +132,17 @@
     <div class="container">
         <h1>Gerenciar Usuários</h1>
         
-        <a href="#" class="btn">+ Novo Usuário</a>
+        <a href="{% url 'user-create' %}" class="btn">+ Novo Usuário</a>
         
         {% if users %}
             <table>
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nome de Usuário</th>
+                        <th>username</th>
                         <th>Email</th>
-                        <th>Nome Completo</th>
-                        <th>Cidade</th>
-                        <th>Telefone</th>
+                        <th>Nome</th>
+                        <th>Tipo</th>
                         <th>Status</th>
                         <th>Ações</th>
                     </tr>
@@ -154,9 +153,8 @@
                         <td>{{ user.id }}</td>
                         <td>{{ user.username }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ user.first_name }} {{ user.last_name }}</td>
-                        <td>{{ user.cidade|default:"-" }}</td>
-                        <td>{{ user.telefone|default:"-" }}</td>
+                        <td>{{ user.nome }}</td>
+                        <td>{{ user.tipo_usuario.nome|default:"-" }}</td>
                         <td>
                             {% if user.is_active %}
                                 <span class="badge badge-active">Ativo</span>
@@ -166,8 +164,8 @@
                         </td>
                         <td>
                             <div class="actions">
-                                <a href="#" class="btn-small btn-edit">Editar</a>
-                                <a href="#" class="btn-small btn-delete" onclick="return confirm('Tem certeza?')">Deletar</a>
+                                <a href="{% url 'user-detail' user.id %}" class="btn-small btn-edit">Editar</a>
+                                <a href="{% url 'user-delete' user.id %}" class="btn-small btn-delete" onclick="return confirm('Tem certeza?')">Deletar</a>
                             </div>
                         </td>
                     </tr>

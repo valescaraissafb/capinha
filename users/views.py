@@ -4,18 +4,18 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth import authenticate
-from .models import User
+from .models import user
 from .serializers import UserListSerializer, UserDetailSerializer, UserCreateSerializer
 
 
 def user_list_view(request):
     """View de template para listar usuários"""
-    users = User.objects.all()
+    users = user.objects.all()
     return render(request, 'users/user_list.html', {'users': users})
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = user.objects.all()
     permission_classes = [IsAuthenticated]
     
     def get_serializer_class(self):
