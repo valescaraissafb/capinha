@@ -7,19 +7,12 @@ class TipouserAdmin(admin.ModelAdmin):
     list_display = ['id', 'nome']
     search_fields = ['nome']
 
-
 @admin.register(user)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['id', 'nome', 'email', 'status', 'data_cadastro', 'tipo_usuario']
-    list_filter = ['status', 'data_cadastro', 'tipo_usuario']
-    search_fields = ['nome', 'email']
-    readonly_fields = ['data_cadastro']
-    
-    fieldsets = (
-        ('Informações Básicas', {'fields': ('nome', 'email', 'status')}),
-        ('Tipo de Usuário', {'fields': ('tipo_usuario',)}),
-        ('Data', {'fields': ('data_cadastro',)}),
-    )
+    list_display = ('id', 'email', 'nome','senha', 'is_active', 'is_staff')
+    list_filter = ('is_active', 'is_staff', 'tipo_usuario')
+    search_fields = ('email', 'nome')
+
 
 
 @admin.register(userTelefone)
