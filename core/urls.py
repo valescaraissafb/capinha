@@ -22,13 +22,13 @@ urlpatterns = [
     path("api/", include("orders.urls")),
     path('artists/', include('artists.urls')),
     path('creations/', include('creations.urls')),
-<<<<<<< HEADcd 
+ 
     path("api/", include("payments.urls")),
-=======
+
     path('gamification/', include('gamification.urls')),
     path('users/', include('users.urls')),
     path('api/printing/', include('printing.urls')),
->>>>>>> 069a12fa8ada9c5eca6e90a4e7c917230a8221b5
+
 ]
 # NÃO MEXA ISSO AQUI QUE ESTÁ COMENTADO!!!!
 # urlpatterns = [
