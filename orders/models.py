@@ -113,7 +113,7 @@ class ItemPedido(models.Model):
     # Quantidade e preços
     quantidade = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     preco_unitario = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
-    subtotal = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], editable=False)
     
     # Datas
     criado_em = models.DateTimeField(auto_now_add=True, null=True, blank=True)
@@ -123,6 +123,11 @@ class ItemPedido(models.Model):
         verbose_name = 'Item do Pedido'
         verbose_name_plural = 'Itens do Pedido'
         ordering = ['criado_em']
+    
+    def save(self, *args, **kwargs):
+        """Calcula automaticamente o subtotal antes de salvar"""
+        self.subtotal = Decimal(self.quantidade) * self.preco_unitario
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return f"Item #{self.id} - {self.produto.nome} x{self.quantidade}"
