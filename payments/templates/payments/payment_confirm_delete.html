@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Confirmar Exclusão - Pagamento #{{ payment.id }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-exclamation-triangle"></i> Confirmar Exclusão
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <i class="fas fa-warning"></i>
+                        <strong>Atenção!</strong> Esta ação não pode ser desfeita.
+                    </div>
+
+                    <p class="mb-3">
+                        Você tem certeza que deseja deletar o pagamento <strong>#{{ payment.id }}</strong>?
+                    </p>
+
+                    <!-- Detalhes do Pagamento -->
+                    <div class="card mb-4 bg-light">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="text-muted mb-1">Valor</p>
+                                    <h5>R$ {{ payment.amount }}</h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="text-muted mb-1">Status</p>
+                                    <h5>
+                                        {% if payment.status == 'pending' %}
+                                            <span class="badge bg-warning">Pendente</span>
+                                        {% elif payment.status == 'paid' %}
+                                            <span class="badge bg-success">Pago</span>
+                                        {% elif payment.status == 'canceled' %}
+                                            <span class="badge bg-danger">Cancelado</span>
+                                        {% elif payment.status == 'refunded' %}
+                                            <span class="badge bg-info">Reembolsado</span>
+                                        {% endif %}
+                                    </h5>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="text-muted mb-1">Método</p>
+                                    <h6>
+                                        {% if payment.method == 'pix' %}
+                                            Pix
+                                        {% elif payment.method == 'credit_card' %}
+                                            Cartão de Crédito
+                                        {% elif payment.method == 'debit_card' %}
+                                            Cartão de Débito
+                                        {% endif %}
+                                    </h6>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="text-muted mb-1">Data de Criação</p>
+                                    <h6>{{ payment.created_at|date:"d/m/Y H:i" }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aviso Important -->
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Importante:</strong> Você não poderá recuperar este pagamento após deletá-lo.
+                    </div>
+
+                    <!-- Formulário de Confirmação -->
+                    <form method="post" class="mt-4">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger btn-lg">
+                                <i class="fas fa-trash"></i> Sim, Deletar Pagamento
+                            </button>
+                            <a href="{% url 'payment-detail' payment.id %}" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

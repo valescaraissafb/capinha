@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Confirmar Pagamento - #{{ payment.id }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-success">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-check-circle"></i> Confirmar Pagamento
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-success" role="alert">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Atenção!</strong> Você está prestes a confirmar este pagamento.
+                    </div>
+
+                    <p class="mb-4 text-center">
+                        Tem certeza que deseja marcar o pagamento <strong>#{{ payment.id }}</strong> como confirmado?
+                    </p>
+
+                    <!-- Detalhes do Pagamento -->
+                    <div class="card mb-4 bg-light">
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p class="text-muted mb-1"><strong>Valor</strong></p>
+                                    <h4 class="text-success">R$ {{ payment.amount }}</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="text-muted mb-1"><strong>Status Atual</strong></p>
+                                    <h5>
+                                        <span class="badge bg-warning p-2">
+                                            <i class="fas fa-hourglass-half"></i> Pendente
+                                        </span>
+                                    </h5>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="text-muted mb-1"><strong>Método de Pagamento</strong></p>
+                                    <h6>
+                                        {% if payment.method == 'pix' %}
+                                            <i class="fas fa-qrcode text-primary"></i> Pix
+                                        {% elif payment.method == 'credit_card' %}
+                                            <i class="fas fa-credit-card text-info"></i> Cartão de Crédito
+                                        {% elif payment.method == 'debit_card' %}
+                                            <i class="fas fa-credit-card text-secondary"></i> Cartão de Débito
+                                        {% endif %}
+                                    </h6>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="text-muted mb-1"><strong>Reference ID</strong></p>
+                                    {% if payment.reference_id %}
+                                        <code class="bg-white p-2 rounded small">{{ payment.reference_id }}</code>
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Novo Status -->
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-arrow-right"></i>
+                        <strong>Novo status:</strong> 
+                        <span class="badge bg-success">
+                            <i class="fas fa-check-circle"></i> Pago
+                        </span>
+                    </div>
+
+                    <!-- Timestamp -->
+                    <div class="alert alert-secondary" role="alert">
+                        <p class="mb-1">
+                            <strong>Data de Pagamento:</strong><br>
+                            {{ now|date:"d/m/Y H:i:s" }}
+                        </p>
+                    </div>
+
+                    <!-- Formulário de Confirmação -->
+                    <form method="post" class="mt-4">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-check"></i> Confirmar Pagamento
+                            </button>
+                            <a href="{% url 'payment-detail' payment.id %}" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Informações Adicionais -->
+            <div class="card shadow mt-4">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0"><i class="fas fa-lightbulb"></i> Informações</h6>
+                </div>
+                <div class="card-body small">
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-info-circle text-info"></i>
+                            O pagamento será marcado como confirmado imediatamente
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-info-circle text-info"></i>
+                            A data e hora atual serão registradas
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-info-circle text-info"></i>
+                            O status não poderá ser revertido automaticamente
+                        </li>
+                        <li>
+                            <i class="fas fa-info-circle text-info"></i>
+                            Certifique-se de que o pagamento foi realmente recebido
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
