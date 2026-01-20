@@ -45,7 +45,7 @@ class ColecaoAdmin(admin.ModelAdmin):
         # Se não é admin, mostrar apenas coleções do artista
         if not request.user.is_superuser:
             if hasattr(request.user, 'artista'):
-                qs = qs.filter(artista=request.user.artista)
+                qs = qs.filter(artista=request.user.artista) # type: ignore
         return qs
 
 
@@ -109,7 +109,7 @@ class ArteAdmin(admin.ModelAdmin):
         # Se não é admin, mostrar apenas artes do artista
         if not request.user.is_superuser:
             if hasattr(request.user, 'artista'):
-                qs = qs.filter(artista=request.user.artista)
+                qs = qs.filter(artista=request.user.artista) # type: ignore
         return qs
 
 
@@ -192,5 +192,5 @@ class PersonalizacaoAdmin(admin.ModelAdmin):
         # Se não é admin, mostrar apenas personalizações de artes do artista
         if not request.user.is_superuser:
             if hasattr(request.user, 'artista'):
-                qs = qs.filter(arte__artista=request.user.artista)
+                qs = qs.filter(arte__artista=request.user.artista) # type: ignore
         return qs
