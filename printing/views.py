@@ -1,5 +1,4 @@
 from django.views.generic import ListView, DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -48,7 +47,7 @@ class ImpressoraViewSet(viewsets.ModelViewSet):
 
 # ===== VIEWS BASEADAS EM CLASSE PARA TEMPLATES =====
 
-class ImpressoraListView(LoginRequiredMixin, ListView):
+class ImpressoraListView(ListView):
     """Lista de todas as impressoras"""
     model = Impressora
     template_name = 'printing/impressora_list.html'
@@ -64,7 +63,7 @@ class ImpressoraListView(LoginRequiredMixin, ListView):
         return context
 
 
-class ImpressoraDetailView(LoginRequiredMixin, DetailView):
+class ImpressoraDetailView(DetailView):
     """Detalhes de uma impressora"""
     model = Impressora
     template_name = 'printing/impressora_detail.html'
@@ -79,7 +78,7 @@ class ImpressoraDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class FilaImpressaoListView(LoginRequiredMixin, ListView):
+class FilaImpressaoListView(ListView):
     """Lista de fila de impressão"""
     model = FilaImpressao
     template_name = 'printing/fila_lista.html'

@@ -1,5 +1,4 @@
 from django.views.generic import TemplateView, ListView
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum, Count
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -33,7 +32,7 @@ class UsuarioRecompensaViewSet(viewsets.ModelViewSet):
 
 # ===== VIEWS BASEADAS EM CLASSE PARA TEMPLATES =====
 
-class GamificationDashboardView(LoginRequiredMixin, TemplateView):
+class GamificationDashboardView(TemplateView):
     """Dashboard de gamificação do usuário"""
     template_name = 'gamification/dashboard.html'
 
@@ -83,7 +82,7 @@ class GamificationDashboardView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class BadgesListView(LoginRequiredMixin, ListView):
+class BadgesListView(ListView):
     """Lista de todos os badges disponíveis"""
     model = Badge
     template_name = 'gamification/badges_list.html'
@@ -103,7 +102,7 @@ class BadgesListView(LoginRequiredMixin, ListView):
         return context
 
 
-class RankingListView(LoginRequiredMixin, ListView):
+class RankingListView(ListView):
     """Ranking de usuários"""
     model = Ranking
     template_name = 'gamification/ranking_list.html'

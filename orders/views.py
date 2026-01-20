@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets, status, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -195,7 +194,7 @@ class ItemPedidoViewSet(mixins.UpdateModelMixin,
 
 # ===== VIEWS BASEADAS EM CLASSE PARA TEMPLATES =====
 
-class PedidoListView(LoginRequiredMixin, ListView):
+class PedidoListView(ListView):
     """Lista todos os pedidos do usuário logado"""
     model = Pedido
     template_name = 'orders/pedido_list.html'
@@ -206,7 +205,7 @@ class PedidoListView(LoginRequiredMixin, ListView):
         return Pedido.objects.filter(usuario=self.request.user).order_by('-data_pedido')
 
 
-class PedidoDetailView(LoginRequiredMixin, DetailView):
+class PedidoDetailView(DetailView):
     """Detalhes de um pedido específico"""
     model = Pedido
     template_name = 'orders/pedido_detail.html'
