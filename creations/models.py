@@ -71,33 +71,28 @@ class Arte(models.Model):
         return self.personalizacoes.count() # type: ignore
     
     
-    class Personalizacao(models.Model):
-    arte = models.ForeignKey( # type: ignore
-        arte,  # type: ignore
+class Personalizacao(models.Model):
+    arte = models.ForeignKey(  # type: ignore
+        Arte,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='personalizacoes'
     )
-    
     texto = models.CharField(max_length=255, blank=True)
     fonte = models.CharField(max_length=100, blank=True)
     cor = models.CharField(max_length=50, blank=True)
     preco_extra = models.DecimalField(
         max_digits=10,
         decimal_places=2,
-        default=0 # type: ignore
+        default=0  # type: ignore
     )
-    
+
     criado_em = models.DateTimeField(auto_now_add=True)
     atualizado_em = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-criado_em']
-        indexes = [
-            models.Index(fields=['arte']),
-            models.Index(fields=['criado_em']),
-        ]
 
     def __str__(self):
-        return self.texto or f'Personalização #{self.id}' # type: ignore
+        return f'Personalização #{self.id}' # type: ignore
