@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Artistas{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>Artistas</h1>
+        </div>
+        <div class="col-md-4 text-end">
+            {% if user.is_authenticated %}
+                <a href="{% url 'artista-create' %}" class="btn btn-primary">
+                    + Novo Artista
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if artistas %}
+        <div class="row">
+            {% for artista in artistas %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ artista.nome_artistico }}</h5>
+                            
+                            {% if artista.biografia %}
+                                <p class="card-text text-muted">
+                                    {{ artista.biografia|truncatewords:20 }}
+                                </p>
+                            {% endif %}
+
+                            <div class="mb-3">
+                                {% if artista.instagram %}
+                                    <a href="{{ artista.instagram }}" 
+                                       target="_blank" 
+                                       class="btn btn-sm btn-outline-danger">
+                                        <i class="fab fa-instagram"></i> Instagram
+                                    </a>
+                                {% endif %}
+                                
+                                {% if artista.portfolio_url %}
+                                    <a href="{{ artista.portfolio_url }}" 
+                                       target="_blank" 
+                                       class="btn btn-sm btn-outline-secondary">
+                                        Portfolio
+                                    </a>
+                                {% endif %}
+                            </div>
+
+                            <small class="text-muted d-block mb-2">
+                                Cadastrado em: {{ artista.criado_em|date:"d/m/Y" }}
+                            </small>
+
+                            {% if artista.conta_bancaria %}
+                                <div class="alert alert-info py-2 px-3 mb-2">
+                                    <small>
+                                        <strong>Banco:</strong> {{ artista.conta_bancaria.banco }}<br>
+                                        <strong>Agência:</strong> {{ artista.conta_bancaria.agencia }}<br>
+                                        <strong>Tipo:</strong> {{ artista.conta_bancaria.get_tipo_conta_display }}
+                                    </small>
+                                </div>
+                            {% endif %}
+
+                            {% if user.is_authenticated and user == artista.usuario %}
+                                <div class="mt-3">
+                                    <a href="{% url 'artista-detail' artista.id %}" 
+                                       class="btn btn-sm btn-info">
+                                        Visualizar
+                                    </a>
+                                    <a href="{% url 'artista-update' artista.id %}" 
+                                       class="btn btn-sm btn-warning">
+                                        Editar
+                                    </a>
+                                    <a href="{% url 'artista-delete' artista.id %}" 
+                                       class="btn btn-sm btn-danger">
+                                        Deletar
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            <p>Nenhum artista encontrado. {% if user.is_authenticated %}<a href="{% url 'artista-create' %}">Crie um novo artista</a>{% endif %}</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

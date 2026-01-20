@@ -19,15 +19,16 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("api/", include("orders.urls")),
+    path("orders/", include("orders.urls")),
     path('artists/', include('artists.urls')),
     path('creations/', include('creations.urls')),
+
  
-    path("api/", include("payments.urls")),
+    path("payments/", include("payments.urls")),
 
     path('gamification/', include('gamification.urls')),
     path('users/', include('users.urls')),
-    path('api/printing/', include('printing.urls')),
+    path('printing/', include('printing.urls')),
 
 ]
 # NÃO MEXA ISSO AQUI QUE ESTÁ COMENTADO!!!!
