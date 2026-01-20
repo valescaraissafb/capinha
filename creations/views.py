@@ -49,7 +49,7 @@ def colecao_list_view(request):
 def colecao_detail_view(request, pk):
     """Exibe detalhes de uma coleção com suas artes."""
     colecao = get_object_or_404(Colecao, pk=pk, ativa=True)
-    artes = colecao.artes.filter(ativa=True)
+    artes = colecao.artes.filter(ativa=True) # type: ignore
     
     return render(request, 'creations/colecao_detail.html', {
         'colecao': colecao,
@@ -95,7 +95,7 @@ def arte_list_view(request):
 def arte_detail_view(request, pk):
     """Exibe detalhes de uma arte com suas personalizações."""
     arte = get_object_or_404(Arte, pk=pk, ativa=True)
-    personalizacoes = arte.personalizacoes.all()
+    personalizacoes = arte.personalizacoes.all() # type: ignore
     
     return render(request, 'creations/arte_detail.html', {
         'arte': arte,
@@ -168,7 +168,7 @@ class ColecaoViewSet(ModelViewSet):
         
         if not self.request.user.is_superuser:
             if hasattr(self.request.user, 'artista'):
-                qs = qs.filter(artista=self.request.user.artista)
+                qs = qs.filter(artista=self.request.user.artista) # type: ignore
         
         return qs
 
@@ -180,7 +180,7 @@ class ColecaoViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         """Associa a coleção ao artista autenticado."""
-        artista = self.request.user.artista if hasattr(self.request.user, 'artista') else None
+        artista = self.request.user.artista if hasattr(self.request.user, 'artista') else None # type: ignore
         serializer.save(artista=artista)
 
     def perform_update(self, serializer):
@@ -195,7 +195,7 @@ class ColecaoViewSet(ModelViewSet):
 
     def perform_destroy(self, instance):
         """Verifica permissão antes de deletar."""
-        if instance.artista != self.request.user.artista and not self.request.user.is_superuser:
+        if instance.artista != self.request.user.artista and not self.request.user.is_superuser: # type: ignore
             return Response(
                 {'erro': 'Você só pode deletar suas próprias coleções'},
                 status=403
@@ -248,13 +248,13 @@ class ArteViewSet(ModelViewSet):
         
         if not self.request.user.is_superuser:
             if hasattr(self.request.user, 'artista'):
-                qs = qs.filter(artista=self.request.user.artista)
+                qs = qs.filter(artista=self.request.user.artista) # type: ignore
         
         return qs
 
     def perform_create(self, serializer):
         """Associa a arte ao artista autenticado."""
-        artista = self.request.user.artista if hasattr(self.request.user, 'artista') else None
+        artista = self.request.user.artista if hasattr(self.request.user, 'artista') else None # type: ignore
         serializer.save(artista=artista)
 
     def perform_update(self, serializer):
@@ -269,7 +269,7 @@ class ArteViewSet(ModelViewSet):
 
     def perform_destroy(self, instance):
         """Verifica permissão antes de deletar."""
-        if instance.artista != self.request.user.artista and not self.request.user.is_superuser:
+        if instance.artista != self.request.user.artista and not self.request.user.is_superuser: # type: ignore
             return Response(
                 {'erro': 'Você só pode deletar suas próprias artes'},
                 status=403
@@ -363,7 +363,7 @@ class PersonalizacaoViewSet(ModelViewSet):
         
         if not self.request.user.is_superuser:
             if hasattr(self.request.user, 'artista'):
-                qs = qs.filter(arte__artista=self.request.user.artista)
+                qs = qs.filter(arte__artista=self.request.user.artista) # type: ignore
         
         return qs
 
@@ -383,7 +383,7 @@ class PersonalizacaoViewSet(ModelViewSet):
 
     def perform_destroy(self, instance):
         """Verifica permissão antes de deletar."""
-        if instance.arte.artista != self.request.user.artista and not self.request.user.is_superuser:
+        if instance.arte.artista != self.request.user.artista and not self.request.user.is_superuser: # type: ignore
             return Response(
                 {'erro': 'Você só pode deletar personalizações de suas próprias artes'},
                 status=403
