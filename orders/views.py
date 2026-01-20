@@ -202,6 +202,9 @@ class PedidoListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
+        # Se usuário não está autenticado, retornar queryset vazio
+        if not self.request.user.is_authenticated:
+            return Pedido.objects.none()
         return Pedido.objects.filter(usuario=self.request.user).order_by('-data_pedido')
 
 
@@ -212,6 +215,9 @@ class PedidoDetailView(DetailView):
     context_object_name = 'pedido'
 
     def get_queryset(self):
+        # Se usuário não está autenticado, retornar queryset vazio
+        if not self.request.user.is_authenticated:
+            return Pedido.objects.none()
         return Pedido.objects.filter(usuario=self.request.user)
 
     def get_context_data(self, **kwargs):

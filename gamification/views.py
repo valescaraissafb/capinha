@@ -38,6 +38,11 @@ class GamificationDashboardView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
+        # Se usuário não está autenticado, retornar contexto vazio
+        if not self.request.user.is_authenticated:
+            return context
+        
         usuario = self.request.user
 
         # Pontos do usuário
@@ -91,6 +96,12 @@ class BadgesListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
+        # Se usuário não está autenticado, retornar contexto vazio
+        if not self.request.user.is_authenticated:
+            context['badges_desbloqueados'] = []
+            return context
+        
         usuario = self.request.user
         
         # Badges desbloqueados por este usuário
@@ -114,6 +125,12 @@ class RankingListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
+        # Se usuário não está autenticado, retornar contexto vazio
+        if not self.request.user.is_authenticated:
+            context['posicao_usuario'] = None
+            return context
+        
         # Posição do usuário atual
         posicao_usuario = Ranking.objects.filter(
             usuario=self.request.user,
