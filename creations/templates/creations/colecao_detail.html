@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ colecao.nome }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Header da Coleção -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>{{ colecao.nome }}</h1>
+            <p class="text-muted">
+                <i class="fas fa-user"></i> por <strong>{{ colecao.artista.nome_artistico }}</strong>
+            </p>
+            {% if colecao.descricao %}
+                <p class="lead">{{ colecao.descricao }}</p>
+            {% endif %}
+        </div>
+        <div class="col-md-4 text-end">
+            {% if user.is_authenticated and user.perfil_artista == colecao.artista %}
+                <a href="{% url 'colecao-update' colecao.id %}" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Editar Coleção
+                </a>
+                <a href="{% url 'arte-create' %}" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Adicionar Arte
+                </a>
+            {% endif %}
+            <a href="{% url 'colecao-list' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </a>
+        </div>
+    </div>
+
+    <!-- Informações da Coleção -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <small class="text-muted">Artes na Coleção</small>
+                            <h4>{{ colecao.artes.count }}</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <small class="text-muted">Data de Criação</small>
+                            <h4>{{ colecao.criado_em|date:"d/m/Y" }}</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <small class="text-muted">Status</small>
+                            <h4>
+                                {% if colecao.ativa %}
+                                    <span class="badge bg-success">Ativa</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Inativa</span>
+                                {% endif %}
+                            </h4>
+                        </div>
+                        <div class="col-md-3">
+                            <small class="text-muted">Artista</small>
+                            <h4>
+                                <a href="#">{{ colecao.artista.nome_artistico }}</a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Artes da Coleção -->
+    <h2 class="mb-4">Artes na Coleção</h2>
+    {% if colecao.artes.all %}
+        <div class="row">
+            {% for arte in colecao.artes.all %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <!-- Imagem -->
+                        <div class="card-img-top bg-secondary" style="height: 300px; overflow: hidden;">
+                            <img src="{{ arte.arquivo.url }}" 
+                                 alt="{{ arte.nome }}"
+                                 style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title">{{ arte.nome }}</h5>
+                            {% if arte.descricao %}
+                                <p class="card-text text-muted small">
+                                    {{ arte.descricao|truncatewords:10 }}
+                                </p>
+                            {% endif %}
+
+                            <!-- Status -->
+                            <div class="mb-3">
+                                {% if arte.ativa %}
+                                    <span class="badge bg-success">Ativa</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Inativa</span>
+                                {% endif %}
+                                <small class="text-muted d-block mt-2">
+                                    {{ arte.criado_em|date:"d/m/Y" }}
+                                </small>
+                            </div>
+
+                            <!-- Botões -->
+                            <div class="btn-group w-100" role="group">
+                                <a href="{% url 'arte-detail' arte.id %}" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i> Ver
+                                </a>
+                                {% if user.is_authenticated and user.perfil_artista == arte.artista %}
+                                    <a href="{% url 'arte-update' arte.id %}" 
+                                       class="btn btn-sm btn-outline-warning">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="{% url 'arte-delete' arte.id %}" 
+                                       class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-inbox"></i>
+            <p class="mb-0">Nenhuma arte nesta coleção ainda.</p>
+            {% if user.is_authenticated and user.perfil_artista == colecao.artista %}
+                <a href="{% url 'arte-create' %}" class="btn btn-sm btn-primary mt-2">
+                    Adicionar Primeira Arte
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

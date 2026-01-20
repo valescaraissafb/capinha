@@ -1,7 +1,4 @@
 from django.shortcuts import render
-
-# Create your views here.
-
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from .models import Artista
@@ -14,3 +11,8 @@ class ArtistaViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
+
+# Adicione uma view baseada em função para renderizar o template
+def artista_list(request):
+    artistas = Artista.objects.filter(ativo=True)
+    return render(request, 'artists/artista_list.html', {'artistas': artistas})
