@@ -72,12 +72,24 @@ class Arte(models.Model):
     
     
 class Personalizacao(models.Model):
+    """
+    Personalização de um produto.
+    Define como o produto vai ficar (visual + preço extra).
+    """
     arte = models.ForeignKey(  # type: ignore
         Arte,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='personalizacoes'
+    )
+    produto = models.ForeignKey(
+        'products.Produto',
+        on_delete=models.PROTECT,
+        related_name='personalizacoes',
+        null=True,
+        blank=True,
+        help_text="Produto que esta personalização se aplica"
     )
     texto = models.CharField(max_length=255, blank=True)
     fonte = models.CharField(max_length=100, blank=True)
@@ -93,6 +105,8 @@ class Personalizacao(models.Model):
 
     class Meta:
         ordering = ['-criado_em']
+        verbose_name = "Personalização"
+        verbose_name_plural = "Personalizações"
 
     def __str__(self):
         return f'Personalização #{self.id}' # type: ignore

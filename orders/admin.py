@@ -8,7 +8,7 @@ class PedidoAdmin(admin.ModelAdmin):
     list_display = ('id', 'usuario', 'artista', 'status_pedido', 'valor_total', 'data_pedido')
     list_filter = ('status_pedido', 'data_pedido', 'artista')
     search_fields = ('usuario__nome', 'usuario__email', 'artista__nome_artistico')
-    readonly_fields = ('data_pedido', 'data_pagamento', 'data_producao', 'data_impressao', 'data_envio', 'data_conclusao')
+    readonly_fields = ('id', 'data_pedido', 'data_pagamento', 'data_producao', 'data_impressao', 'data_envio', 'data_conclusao')
     
     fieldsets = (
         ('Informações do Pedido', {

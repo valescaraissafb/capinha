@@ -33,8 +33,19 @@ class user(AbstractBaseUser, PermissionsMixin):
     nome = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     senha = models.CharField(max_length=128)
+    documento = models.CharField(
+        max_length=20, 
+        blank=True, 
+        null=True,
+        help_text="CPF ou CNPJ do usuário"
+    )
 
-    tipo_usuario = models.ForeignKey(Tipouser, on_delete=models.PROTECT)
+    tipo_usuario = models.ForeignKey(
+        Tipouser, 
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True
+    )
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -44,13 +55,7 @@ class user(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['nome']
-    
-    tipo_usuario = models.ForeignKey(
-        Tipouser,
-        on_delete=models.PROTECT,
-        null=True,
-        blank=True
-        )
+
     def __str__(self):
         return self.email
 
