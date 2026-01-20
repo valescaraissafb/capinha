@@ -133,8 +133,6 @@
     <div class="container">
         <h1>Gerenciar Usuários</h1>
         
-        <a href="{% url 'user-create' %}" class="btn">+ Novo Usuário</a>
-        
         {% if users %}
             <table>
                 <thead>
@@ -165,8 +163,8 @@
                         </td>
                         <td>
                             <div class="actions">
-                                <a href="{% url 'user-detail' user.id %}" class="btn-small btn-edit">Editar</a>
-                                <a href="{% url 'user-delete' user.id %}" class="btn-small btn-delete" onclick="return confirm('Tem certeza?')">Deletar</a>
+                                <span class="btn-small btn-edit" style="opacity: 0.5; cursor: not-allowed;">Editar</span>
+                                <span class="btn-small btn-delete" style="opacity: 0.5; cursor: not-allowed;">Deletar</span>
                             </div>
                         </td>
                     </tr>
